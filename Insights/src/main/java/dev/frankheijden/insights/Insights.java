@@ -39,7 +39,6 @@ import dev.frankheijden.insights.commands.util.CommandSenderMapper;
 import dev.frankheijden.insights.concurrent.ContainerExecutorService;
 import dev.frankheijden.insights.listeners.manager.ListenerManager;
 import dev.frankheijden.insights.nms.core.InsightsNMS;
-import dev.frankheijden.insights.placeholders.InsightsPlaceholderExpansion;
 import dev.frankheijden.insights.tasks.PlayerTrackerTask;
 import io.leangen.geantyref.TypeToken;
 import io.papermc.lib.PaperLib;
@@ -82,7 +81,6 @@ public class Insights extends InsightsPlugin {
     private MetricsManager metricsManager;
     private ScanHistory scanHistory;
     private ListenerManager listenerManager;
-    private InsightsPlaceholderExpansion placeholderExpansion;
     private BukkitTask playerTracker = null;
     private BukkitTask updateChecker = null;
     private BukkitAudiences audiences = null;
@@ -158,10 +156,6 @@ public class Insights extends InsightsPlugin {
         listenerManager.unregister();
         redstoneUpdateCount.stop();
         notifications.clearNotifications();
-        if (placeholderExpansion != null) {
-            placeholderExpansion.unregister();
-            placeholderExpansion = null;
-        }
         chunkContainerExecutor.shutdown();
         audiences.close();
     }
@@ -402,10 +396,5 @@ public class Insights extends InsightsPlugin {
 
         listenerManager.unregister();
         listenerManager.register();
-
-        if (placeholderExpansion == null && isAvailable("PlaceholderAPI")) {
-            placeholderExpansion = new InsightsPlaceholderExpansion(this);
-            placeholderExpansion.register();
-        }
     }
 }
